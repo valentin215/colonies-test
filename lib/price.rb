@@ -15,7 +15,21 @@ class Price
   end 
 
   def rental_price
-    (total_price_per_day) + (car.price_per_km * rental.distance)
+    @rental_price ||= begin
+      (total_price_per_day) + (car.price_per_km * rental.distance)
+    end 
+  end
+  
+  def insurance_fee
+    (rental_price * (30/100.to_f) / 2).to_i
+  end 
+
+  def assistance_fee
+    rental.rental_days * 100
+  end 
+
+  def drivy_fee
+    insurance_fee - assistance_fee
   end 
 
   private 
