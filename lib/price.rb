@@ -26,7 +26,7 @@ class Price
   end
   
   def insurance_fee
-    ((rental_price - rental.options_price) * (30/100.to_f) / 2).to_i
+    (rental_price_without_options * (30/100.to_f) / 2).to_i
   end 
 
   def assistance_fee
@@ -34,14 +34,22 @@ class Price
   end 
 
   def drivy_fee
-    insurance_fee - assistance_fee + rental.drivy_options_credit
+    (drivy_fee_without_options) + rental.drivy_options_credit
   end 
 
   def owner_credit
-    (rental_price - rental.options_price) - (insurance_fee + assistance_fee + (drivy_fee - rental.drivy_options_credit)) + rental.owner_options_credit
+    (rental_price_without_options) - (insurance_fee + assistance_fee + (drivy_fee_without_options)) + rental.owner_options_credit
   end 
 
-  private 
+  private
+  
+  def rental_price_without_options
+    rental_price - rental.options_price
+  end 
+
+  def drivy_fee_without_options
+    insurance_fee - assistance_fee
+  end 
 
   def total_price
     if rental.rental_days > 1 && rental.rental_days < 5
