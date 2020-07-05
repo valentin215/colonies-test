@@ -3,7 +3,7 @@ require_relative 'rental'
 require_relative 'option'
 
 class Price
-  attr_accessor :rental, :car
+  attr_reader :rental, :car
   private :rental, :car
 
   def initialize(rental:, car:)

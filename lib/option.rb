@@ -1,5 +1,5 @@
 class Option
-  attr_accessor :informations, :id, :rental_id, :type
+  attr_reader :informations, :id, :rental_id, :type
   OPTIONS = []
 
   def initialize(informations:)

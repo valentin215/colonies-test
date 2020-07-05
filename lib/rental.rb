@@ -2,7 +2,7 @@ require 'date'
 require_relative 'option'
 
 class Rental
-  attr_accessor :informations, :id, :car_id, :start_date, :end_date, :distance, :options
+  attr_reader :informations, :id, :car_id, :start_date, :end_date, :distance, :options
 
   def initialize(informations:)
     @informations = informations
