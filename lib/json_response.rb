@@ -27,12 +27,35 @@ class JsonResponse
     final_prices = {}
     arr_rentals = []
     prices.each do |price|
-      arr_rentals << { "id": price.rental_id, "price": price.rental_price, 
-        "commission": {
-          "insurance_fee": price.insurance_fee, 
-          "assistance_fee": price.assistance_fee, 
-          "drivy_fee": price.drivy_fee }
-        }
+      arr_rentals << { "id": price.rental_id,
+                        "actions": [
+                          {
+                            "who": "driver",
+                            "type": "debit",
+                            "amount": price.rental_price
+                          },
+                          {
+                            "who": "owner",
+                            "type": "credit",
+                            "amount": price.owner_credit
+                          },
+                          {
+                            "who": "insurance",
+                            "type": "credit",
+                            "amount": price.insurance_fee
+                          },
+                          {
+                            "who": "assistance",
+                            "type": "credit",
+                            "amount": price.assistance_fee
+                          },
+                          {
+                            "who": "drivy",
+                            "type": "credit",
+                            "amount": price.drivy_fee
+                          }
+                        ] 
+                      }
     end 
     final_prices["rentals"] = arr_rentals
     final_prices

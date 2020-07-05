@@ -32,6 +32,10 @@ class Price
     insurance_fee - assistance_fee
   end 
 
+  def owner_credit
+    rental_price - (insurance_fee + assistance_fee + drivy_fee)
+  end 
+
   private 
 
   def total_price_per_day
