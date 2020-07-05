@@ -21,12 +21,12 @@ class Price
 
   def rental_price
     @rental_price ||= begin
-      (total_price_per_day) + (car.price_per_km * rental.distance)
+      (total_price) + (car.price_per_km * rental.distance)
     end 
   end
   
   def insurance_fee
-    (rental_price * (30/100.to_f) / 2).to_i
+    ((rental_price - rental.options_price) * (30/100.to_f) / 2).to_i
   end 
 
   def assistance_fee
@@ -34,16 +34,16 @@ class Price
   end 
 
   def drivy_fee
-    insurance_fee - assistance_fee
+    insurance_fee - assistance_fee + rental.drivy_options_credit
   end 
 
   def owner_credit
-    rental_price - (insurance_fee + assistance_fee + drivy_fee)
+    (rental_price - rental.options_price) - (insurance_fee + assistance_fee + (drivy_fee - rental.drivy_options_credit)) + rental.owner_options_credit
   end 
 
   private 
 
-  def total_price_per_day
+  def total_price
     if rental.rental_days > 1 && rental.rental_days < 5
       price_after_one_day
     elsif rental.rental_days >= 5 && rental.rental_days < 10
@@ -51,19 +51,19 @@ class Price
     elsif rental.rental_days > 10
       price_after_ten_days
     else 
-      car.price_per_day
+      car.price_per_day + rental.options_price
     end 
   end
   
   def price_after_one_day
-    car.price_per_day + (car.price_per_day - (car.price_per_day * 10/100)) * (rental.rental_days - 1)
+    car.price_per_day + (car.price_per_day - (car.price_per_day * 10/100)) * (rental.rental_days - 1) + rental.options_price
   end 
 
   def price_after_four_days
-    car.price_per_day + (car.price_per_day - (car.price_per_day * 10/100)) * 3 + (car.price_per_day - (car.price_per_day * 30/100)) * (rental.rental_days - 4)
+    car.price_per_day + (car.price_per_day - (car.price_per_day * 10/100)) * 3 + (car.price_per_day - (car.price_per_day * 30/100)) * (rental.rental_days - 4) + rental.options_price
   end 
 
   def price_after_ten_days
-    car.price_per_day + (car.price_per_day - (car.price_per_day * 10/100)) * 3 + (car.price_per_day - (car.price_per_day * 30/100)) * 6 + (car.price_per_day - (car.price_per_day * 50/100)) * (rental.rental_days - 10)
+    car.price_per_day + (car.price_per_day - (car.price_per_day * 10/100)) * 3 + (car.price_per_day - (car.price_per_day * 30/100)) * 6 + (car.price_per_day - (car.price_per_day * 50/100)) * (rental.rental_days - 10) + rental.options_price
   end 
 end 

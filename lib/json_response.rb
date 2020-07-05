@@ -17,7 +17,6 @@ class JsonResponse
       hash_cars[car_informations['id']] = car_informations
     end 
 
-
     hash_options = @json_input.dig('options').group_by do |option_informations|
       option_informations['rental_id']
     end 
@@ -41,7 +40,7 @@ class JsonResponse
     arr_rentals = []
     prices.each do |price|
       arr_rentals << { "id": price.rental_id,
-                        "options": [],
+                        "options": price.linked_options,
                         "actions": [
                           {
                             "who": "driver",
