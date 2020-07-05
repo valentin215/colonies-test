@@ -1,5 +1,6 @@
 require_relative 'car'
 require_relative 'rental'
+require_relative 'option'
 
 class Price
   attr_accessor :rental, :car
@@ -12,6 +13,10 @@ class Price
 
   def rental_id
     rental.id
+  end 
+
+  def linked_options
+    rental.group_options
   end 
 
   def rental_price
