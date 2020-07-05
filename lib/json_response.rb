@@ -14,28 +14,30 @@ class JsonResponse
   end 
 
   def prices_generator
+    # first we create an hash that will help you to find the car linked to the rental
+    # this way, we avoid Big O(n^2) when we call car inside the loop of rentals (see below)
     hash_cars = {}
     @json_input.dig('cars').map do |car_informations|
       hash_cars[car_informations['id']] = car_informations
     end 
 
-    hash_options = @json_input.dig('options').group_by do |option_informations|
-      option_informations['rental_id']
-    end 
-
+    # creation of Option objects
     @json_input.dig('options').each do |option_informations|
       Option.new(informations: option_informations)
     end 
 
+    # creation of Rental objects
     rentals = @json_input.dig('rentals').map do |rental_informations|
       Rental.new(informations: rental_informations)
     end 
    
+    # creation of Price objects 
     prices = rentals.map do |rental|
       Price.new(rental: rental, 
                 car: Car.new(informations: hash_cars[rental.car_id])) 
     end 
 
+    # creation of our final json output
     final_prices = {}
     arr_rentals = []
     prices.each do |price|
