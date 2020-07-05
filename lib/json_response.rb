@@ -26,8 +26,6 @@ class JsonResponse
     end 
 
     rentals = @json_input.dig('rentals').map do |rental_informations|
-      # Rental.new(informations: rental_informations, 
-      #            options: Option.new(informations: hash_options[rental_informations['id']]))
       Rental.new(informations: rental_informations)
     end 
    
