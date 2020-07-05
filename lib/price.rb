@@ -3,6 +3,8 @@ require_relative 'rental'
 require_relative 'option'
 
 class Price
+  # this class could be considered as a service which calculates all prices and fees
+  # it also makes the link between a car and a rental object
   attr_reader :rental, :car
   private :rental, :car
 
@@ -63,6 +65,7 @@ class Price
     end 
   end
   
+  # calculation methods for price decreasing per day
   def price_after_one_day
     car.price_per_day + (car.price_per_day - (car.price_per_day * 10/100)) * (rental.rental_days - 1) + options_price
   end 
@@ -75,6 +78,7 @@ class Price
     car.price_per_day + (car.price_per_day - (car.price_per_day * 10/100)) * 3 + (car.price_per_day - (car.price_per_day * 30/100)) * 6 + (car.price_per_day - (car.price_per_day * 50/100)) * (rental.rental_days - 10) + options_price
   end 
 
+  # calculations methods for options prices
   def options_price
     @options_price ||= begin
       if rental.has_options

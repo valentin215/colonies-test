@@ -3,6 +3,7 @@ require_relative 'option'
 
 class Rental
   attr_reader :informations, :id, :car_id, :start_date, :end_date, :distance, :options
+  private :informations, :start_date, :end_date
 
   def initialize(informations:)
     @informations = informations
@@ -15,10 +16,12 @@ class Rental
   end 
 
   def rental_days
+    # we add + 1 to get the proper number of rental days 
     (@end_date - @start_date).to_i + 1
   end
   
   def linked_options
+    # rental class has many options, we grab them thanks to this method
     @find_options ||= begin
       arr = []
       Option.all.each do |option|
@@ -40,6 +43,7 @@ class Rental
   end 
 
   def has_owner_credit_options
+    # this method help us to know if the rental has options linked to the owner
     options.each do |option|
       return true if option.type == 'gps' || option.type == 'baby_seat' 
     end
@@ -47,6 +51,7 @@ class Rental
   end
 
   def has_drivy_credit_options
+    # this method help us to know if the rental has options linked to drivy
     options.each do |option|
       return true if option.type == 'additional_insurance'
     end

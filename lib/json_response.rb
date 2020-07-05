@@ -5,7 +5,9 @@ require_relative 'rental'
 require_relative 'option'
 
 class JsonResponse
+  # this class takes a json as an input and help us to create the final json ouptut with all required informations
   attr_accessor :json_input
+  private :json_input
 
   def initialize(json_input:)
     @json_input = JSON.parse(open(json_input).read)

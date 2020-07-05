@@ -1,5 +1,6 @@
 class Car
   attr_reader :informations, :id, :price_per_day, :price_per_km
+  private :informations
 
   def initialize(informations:)
     @informations = informations
